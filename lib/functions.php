@@ -13,6 +13,7 @@
 
 /**
  */
+//define('LIBDIR', dirname(__FILE__) . '/');
 define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'../htdocs/')));
 define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../locale/')));
 define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
@@ -907,7 +908,7 @@ function get_cached_item($index,$item,$subitem='null') {
  *
  * Returns true on success of false on failure.
  */
-function set_cached_item($index,$item,$subitem='null',$data) {
+function set_cached_item($index,$item,$data,$subitem='null') {
   if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
     debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -1600,7 +1601,7 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 
   # Return icon filename based upon objectClass value
   if (in_array('sambaaccount',$object_classes) &&
-    '$' == $rdn{ strlen($rdn) - 1 })
+      '$' == $rdn[ strlen($rdn) - 1 ])
     return 'nt_machine.png';
 
   if (in_array('sambaaccount',$object_classes))
@@ -2014,7 +2015,7 @@ function ldap_error_msg($msg,$errnum) {
  * @param array Specifies optional image and CSS style attributes for the table tag. Supported keys are
  *                fixed_width, fixed_height, img_opts.
  */
-function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_buttons=false,$options=array()) {
+function draw_jpeg_photo($server,$dn,$index,$attr_name='jpegphoto',$draw_delete_buttons=false,$options=array()) {
   if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
     debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
