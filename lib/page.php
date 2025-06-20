@@ -24,8 +24,14 @@ class page {
 
 	# Default values array.
 	protected $_default;
+    /**
+     * @var mixed|null
+     */
+    public $index;
+	public $sysmsg = [];
+	public $_block = [];
 
-	public function __construct($index=null) {
+    public function __construct($index=null) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -375,8 +381,12 @@ class page {
 			'TREE'=>true,
 			'FOOT'=>true
 		);
-		
-		if ($_SESSION[APPCONFIG]->getValue('appearance','minimalMode')) {
+
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
+
+		if (isset($_SESSION[APPCONFIG]) && $_SESSION[APPCONFIG]->getValue('appearance','minimalMode')) {
 			$display = array(
 				'HEAD'=>false,
 				'CONTROL'=>false,

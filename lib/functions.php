@@ -292,16 +292,19 @@ function check_config($config_file) {
       $body .= '<div style="text-align: left; font-family: monospace; margin-left: 80px; margin-right: 80px; border: 1px solid black; padding: 10px;">';
 
       for ($i = $line_num-9; $i<$line_num+5; $i++) {
-        if ($i+1 == $line_num)
-          $body .= '<div style="color:red;background:#fdd">';
+        // First, check if the line actually exists in the file array
+        if (isset($file[$i])) {
+          if ($i+1 == $line_num)
+            $body .= '<div style="color:red;background:#fdd">';
 
-        if ($i < 0)
-          continue;
+          if ($i < 0)
+            continue;
 
-        $body .= sprintf('<b>%s</b>: %s<br />',$i+1,$file[$i]);
+          $body .= sprintf('<b>%s</b>: %s<br />',$i+1,htmlspecialchars($file[$i], ENT_QUOTES, 'UTF-8'));
 
-        if ($i+1 == $line_num)
-          $body .= '</div>';
+          if ($i+1 == $line_num)
+            $body .= '</div>';
+        }
       }
 
       $body .= '</div>';
@@ -2624,7 +2627,7 @@ function get_href($type,$extra_info='') {
       else
         $proto = 'https';
 
-      return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('%s://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=10',$proto,$group_id);
+      return isset($_SESSION, $_SESSION[APPCONFIG]) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('%s://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=10',$proto,$group_id);
     case 'sf':
       return sprintf('%s/projects/phpldapadmin',$sf);
     case 'web':
